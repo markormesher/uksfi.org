@@ -1,0 +1,39 @@
+body { 
+    margin-top:70px;
+}
+
+/*#login-btn {
+ margin-bottom: 10px;
+}*/
+
+.register-form legend {
+font-size:14px;
+}
+
+.register-form {
+ margin-top:25px;   
+}
+
+#address1-add, #address2-add, #address2-remove, #address3-remove {
+ cursor:pointer;
+}
+
+#address1-add:hover, #address2-add:hover, #address2-remove:hover, #address3-remove:hover  {
+ color:#2FA4E7;
+}
+
+#filters h3:first-child {
+ margin-top:20px;   
+}
+
+.listing-location, .listing-expiry {
+ font-weight: bold;
+}
+
+.pointer-cursor {
+ cursor: pointer;
+}
+
+#filters li label {    
+    font-weight: normal;
+}
