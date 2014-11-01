@@ -17,6 +17,21 @@ function db_checkLogin($email, $password) {
 }
 
 /**
+ * Get a user profile
+ */
+function db_getUserProfile($id) {
+	$filter = array(1,
+		'`id` = ' . $id
+	);
+	$result = search('users', $filter, 1);
+	if ($result === false || !is_array($result)) {
+		return false;
+	} else {
+		return $result[0];
+	}
+}
+
+/**
  * Get a user's setting for a certain preference, or return the default
  */
 function db_getUserPref($userId, $prefName) {

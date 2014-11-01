@@ -5,6 +5,7 @@ require_once 'InvalidEndpoint.class.php';
 require_once 'ListingEndpoint.class.php';
 require_once 'LoginEndpoint.class.php';
 require_once 'PreferenceEndpoint.class.php';
+require_once 'ProfileEndpoint.class.php';
 
 // get database
 require_once '../connections/sql.php';
@@ -39,6 +40,10 @@ switch ($endpoint) {
 	case 'prefs':
 	case 'preferences':
 		$api = new PreferenceEndpoint($request);
+		break;
+
+	case 'profile':
+		$api = new ProfileEndpoint($request);
 		break;
 
 	default:
