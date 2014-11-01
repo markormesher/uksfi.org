@@ -33,11 +33,27 @@ function db_getUserPref($userId, $prefName) {
 		);
 		$defaultValue = search('default_preferences', $filter, 1);
 		if ($defaultValue === false || !is_array($defaultValue)) {
-			return 'nope';
+			return false;
 		} else {
 			return $defaultValue[0];
 		}
 	} else {
 		return $userValue[0];
 	}
+}
+
+/**
+ * Gets multiple preferences for a user, or returns default
+ */
+function db_getMultiUserPref($userId, $prefNames) {
+	$output = array();
+	foreach ($prefNames as $p) {
+		$pref =db_getUserPref($userId, $p);
+		if ($pref !== false) {
+			$output[$p] = $pref['pref_value'];
+		} else {
+			$output[$p] = false;
+		}
+	}
+	return $output;
 }
