@@ -38,6 +38,12 @@ class ListingEndpoint extends BaseAPI {
 	}
 
 	function getListings($filters) {
+		// process filters
+		foreach  ($filters as $k => $v) {
+			$filters[$k] = explode(',', $v);
+		}
+
+		// run query
 		$result = db_getListings($filters);
 		if ($result !== false) {
 			$data = $result;

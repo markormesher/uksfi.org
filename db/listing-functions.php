@@ -19,5 +19,21 @@ function db_getListing($id) {
  * Get listings matching a set of filters
  */
 function db_getListings($filters) {
-	return search('listings', array());
+	// parse filters
+	$filter = array(1, '1');
+	foreach ($filters as $k => $v) {
+		switch ($k) {
+			case 'contents':
+				$temp = array(-1);
+				foreach ($v as $vi) $temp[] = '`contents` LIKE \'%' . $vi . '%\'';
+				$filter[] = $temp;
+				break;
+			case 'can_deliver':
+				$temp = array(-1);
+				foreach ($v as $vi) $temp[] = '`can_deliver` = ' . $vi;
+				$filter[] = $temp;
+				break;
+		}
+	}
+	return search('listings', $filter);
 }
