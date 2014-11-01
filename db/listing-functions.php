@@ -3,7 +3,7 @@
 /**
  * Get a listing by ID
  */
-function db_getListing($id) {
+function db_getListing($id, $userId = 0) {
 	$filter = array(1,
 		'`id` = \'' . $id . '\''
 	);
@@ -14,6 +14,33 @@ function db_getListing($id) {
 		$result[0] = array_merge($result[0], array(
 			'donor' => db_getUserProfile($result[0]['donor_id'])
 		));
+		if ($userId > 0) {
+			$interest = search('interest', array(1,
+				'`user_id` = ' . $userId,
+				'`listing_id` = ' . $result[0]['id']
+			));
+			if ($result[0]['open']) {
+				if (is_array($interest) && count($interest)) {
+					$result[0]['status'] = 'interested';
+				} else {
+					$result[0]['status'] = 'open';
+				}
+			} else {
+				$matched = search('matches', array(1,
+					'`user_id` = ' . $userId,
+					'`listing_id` = ' . $result[0]['id']
+				));
+				if (is_array($matched) && count($matched)) {
+					$result[0]['status'] = 'won';
+				} else {
+					if (is_array($interest) && count($interest)) {
+						$result[0]['status'] = 'lost';
+					} else {
+						$result[0]['status'] = 'closed';
+					}
+				}
+			}
+		}
 		return $result[0];
 	}
 }
@@ -21,7 +48,7 @@ function db_getListing($id) {
 /**
  * Get listings matching a set of filters
  */
-function db_getListings($filters) {
+function db_getListings($filters, $userId = 0) {
 	// parse filters
 	$filter = array(1, '1');
 	foreach ($filters as $k => $v) {
@@ -44,6 +71,33 @@ function db_getListings($filters) {
 		$l = array_merge($l, array(
 			'donor' => db_getUserProfile($l['donor_id'])
 		));
+		if ($userId > 0) {
+			$interest = search('interest', array(1,
+				'`user_id` = ' . $userId,
+				'`listing_id` = ' . $l['id']
+			));
+			if ($l['open']) {
+				if (is_array($interest) && count($interest)) {
+					$l['status'] = 'interested';
+				} else {
+					$l['status'] = 'open';
+				}
+			} else {
+				$matched = search('matches', array(1,
+					'`user_id` = ' . $userId,
+					'`listing_id` = ' . $l['id']
+				));
+				if (is_array($matched) && count($matched)) {
+					$l['status'] = 'won';
+				} else {
+					if (is_array($interest) && count($interest)) {
+						$l['status'] = 'lost';
+					} else {
+						$l['status'] = 'closed';
+					}
+				}
+			}
+		}
 		$output[] = $l;
 	}
 	return $output;

@@ -14,10 +14,10 @@ class ListingEndpoint extends BaseAPI {
 		$qs = parent::getQueryString();
 		$file = parent::getFile();
 
-		if ($method == 'GET' && count($args) == 1) {
-			$this->getListing($args[0]);
+		if ($method == 'GET' && count($args) == 1 && array_key_exists('user_id', $qs)) {
+			$this->getListing($args[0], $qs);
 			return;
-		} elseif ($method == 'GET') {
+		} elseif ($method == 'GET' && array_key_exists('user_id', $qs)) {
 			$this->getListings($qs);
 			return;
 		} elseif ($method == 'POST') {
@@ -30,8 +30,8 @@ class ListingEndpoint extends BaseAPI {
 		$ie->processAPI();
 	}
 
-	function getListing($id) {
-		$result = db_getListing($id);
+	function getListing($id, $qs) {
+		$result = db_getListing($id, $qs['user_id']);
 		if (is_array($result)) {
 			$data = $result;
 			parent::_sendResponse($data);
@@ -42,13 +42,17 @@ class ListingEndpoint extends BaseAPI {
 	}
 
 	function getListings($filters) {
+		// get user id
+		$userId = $filters['user_id'];
+		unset($filters['user_id']);
+
 		// process filters
 		foreach  ($filters as $k => $v) {
 			$filters[$k] = explode(',', $v);
 		}
 
 		// run query
-		$result = db_getListings($filters);
+		$result = db_getListings($filters, $userId);
 		if ($result !== false) {
 			$data = $result;
 			parent::_sendResponse($data);
