@@ -70,13 +70,17 @@ function delete($table, $id) {
 }
 
 function buildFilterString($filter) {
-	if ($filter[0] == 1 || $filter[0] == -1) {
-		$join = array_shift($filter);
-		$terms = array();
-		foreach ($filter as $f) {
-			$terms[] = buildFilterString($f);
+	if (is_array($filter)) {
+		if (count($filter) >= 2 && $filter[0] == 1 || $filter[0] == -1) {
+			$join = array_shift($filter);
+			$terms = array();
+			foreach ($filter as $f) {
+				$terms[] = buildFilterString($f);
+			}
+			return '(' . implode($join == 1 ? ' AND ' : ' OR ', $terms) . ')';
+		} else {
+			return '1';
 		}
-		return '(' . implode($join == 1 ? ' AND ' : ' OR ', $terms) . ')';
 	} else {
 		return $filter;
 	}

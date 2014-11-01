@@ -11,9 +11,13 @@ class ListingEndpoint extends BaseAPI {
 	function processAPI() {
 		$method = parent::getMethod();
 		$args = parent::getArgs();
+		$qs = parent::getQueryString();
 
 		if ($method == 'GET' && count($args) == 1) {
 			$this->getListing($args[0]);
+			return;
+		} elseif ($method == 'GET') {
+			$this->getListings($qs);
 			return;
 		}
 
@@ -30,6 +34,17 @@ class ListingEndpoint extends BaseAPI {
 		} else {
 			$data = array('Error' => 'No listing found with the ID ' . $id);
 			parent::_sendResponse($data, 404);
+		}
+	}
+
+	function getListings($filters) {
+		$result = db_getListings($filters);
+		if ($result !== false) {
+			$data = $result;
+			parent::_sendResponse($data);
+		} else {
+			$data = array('Error' => 'An error occurred when querying the database');
+			parent::_sendResponse($data, 500);
 		}
 	}
 }

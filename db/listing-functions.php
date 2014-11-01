@@ -14,3 +14,10 @@ function db_getListing($id) {
 		return $result[0];
 	}
 }
+
+/**
+ * Get listings matching a set of filters
+ */
+function db_getListings($filters) {
+	return search('listings', array());
+}
