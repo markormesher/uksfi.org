@@ -6,6 +6,7 @@ require_once 'ListingEndpoint.class.php';
 require_once 'LoginEndpoint.class.php';
 require_once 'PreferenceEndpoint.class.php';
 require_once 'ProfileEndpoint.class.php';
+require_once 'RegisterEndpoint.class.php';
 require_once 'StaticEndpoint.class.php';
 
 // get database
@@ -45,6 +46,10 @@ switch ($endpoint) {
 
 	case 'profile':
 		$api = new ProfileEndpoint($request);
+		break;
+
+	case 'register':
+		$api = new RegisterEndpoint($request);
 		break;
 
 	case 'static':
