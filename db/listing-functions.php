@@ -62,5 +62,7 @@ function db_createNewListing($input) {
 			$dbInsert[$f] = $input[$f];
 		}
 	}
-	return insert('listings', $dbInsert);
+	$listingId = insert('listings', $dbInsert);
+	notifyListingPosted($listingId);
+	return $listingId;
 }
