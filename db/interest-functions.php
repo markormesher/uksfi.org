@@ -4,10 +4,12 @@
  * Register interest from a user on a given listing
  */
 function db_registerInterest($listingId, $userId) {
+	$listing = db_getListing($listingId);
 	insert('interest', array(
 		'listing_id' => $listingId,
 		'user_id' => $userId
 	));
+	notifyInterestExpressed($listing['donor_id'], $userId, $listingId);
 }
 
 /**
