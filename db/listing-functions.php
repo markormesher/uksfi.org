@@ -11,6 +11,9 @@ function db_getListing($id) {
 	if ($result === false || !is_array($result)) {
 		return false;
 	} else {
+		$result[0] = array_merge($result[0], array(
+			'donor' => db_getUserProfile($result[0]['donor_id'])
+		));
 		return $result[0];
 	}
 }
@@ -35,7 +38,15 @@ function db_getListings($filters) {
 				break;
 		}
 	}
-	return search('listings', $filter);
+	$listings = search('listings', $filter);
+	$output = array();
+	foreach ($listings as $l) {
+		$l = array_merge($l, array(
+			'donor' => db_getUserProfile($l['donor_id'])
+		));
+		$output[] = $l;
+	}
+	return $output;
 }
 
 /**
