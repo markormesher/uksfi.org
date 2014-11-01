@@ -1,10 +1,6 @@
 <?php
 
-// connect
-
 require_once 'sql-connect.php';
-
-// search
 
 function search($table, $filter, $limit = 0) {
 	$filterString = buildFilterString($filter);
@@ -23,7 +19,50 @@ function search($table, $filter, $limit = 0) {
 	}
 }
 
-// build a query string
+function insert($table, $input) {
+	$fields = array();
+	$values = array();
+	foreach ($input as $k => $v) {
+		$fields[] = '`' . $k . '`';
+		if (is_string($v)) {
+			$values[] = '\'' . addslashes($v) . '\'';
+		} elseif (is_numeric($v)) {
+			$values[] = $v;
+		} elseif (is_array($v)) {
+			$values[] = $v[0];
+		}
+	}
+
+	$queryString = 'INSERT INTO `' . $table . '` (' . implode(',', $fields) . ') VALUES (' . implode(',', $values) . ')';
+	$query = mysql_query($queryString);
+	if ($query) {
+		return mysql_insert_id();
+	} else {
+		return false;
+	}
+}
+
+function update($table, $input, $id) {
+	$fields = array();
+	foreach ($input as $k => $v) {
+		$temp = '`' . $k . '` = ';
+		if (is_string($v)) {
+			$temp .= '\'' . addslashes($v) . '\'';
+		} elseif (is_numeric($v)) {
+			$temp .= $v;
+		} elseif (is_array($v)) {
+			$temp .= $v[0];
+		}
+		$fields[] = $temp;
+	}
+	$queryString = 'UPDATE `' . $table . '` SET ' . implode(',', $fields) . ' WHERE `id` = \'' . $id . '\'';
+	$query = @mysql_query($queryString);
+	if ($query) {
+		return true;
+	} else {
+		return false;
+	}
+}
 
 function buildFilterString($filter) {
 	if ($filter[0] == 1 || $filter[0] == -1) {
