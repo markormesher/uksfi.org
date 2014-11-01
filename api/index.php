@@ -6,6 +6,7 @@ require_once 'ListingEndpoint.class.php';
 require_once 'LoginEndpoint.class.php';
 require_once 'PreferenceEndpoint.class.php';
 require_once 'ProfileEndpoint.class.php';
+require_once 'StaticEndpoint.class.php';
 
 // get database
 require_once '../connections/sql.php';
@@ -44,6 +45,10 @@ switch ($endpoint) {
 
 	case 'profile':
 		$api = new ProfileEndpoint($request);
+		break;
+
+	case 'static':
+		$api = new StaticEndpoint($request);
 		break;
 
 	default:
