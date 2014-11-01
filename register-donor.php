@@ -1,3 +1,58 @@
+<?php
+    if (isset($_POST) && isset($_POST['sent'])) {
+        // collect variables
+        $name = $_POST['full-name'];
+        $email = $_POST['email'];
+        $password = $_POST['password'];
+        $confirmPassword = $_POST['confirm-password'];
+        $companyName = $_POST['company-name'];
+        $phone1 = $_POST['phone1'];
+        $phone2 = $_POST['phone2'];
+        $address1 = $_POST['address1'];
+        $address2 = $_POST['address2'];
+        $address3 = $_POST['address3'];
+        $city = $_POST['city'];
+        $postcode = $_POST['postcode'];
+        $country = $_POST['country'];
+        $description = $_POST['description'];
+        
+        // check for errors
+        $errors = array();
+        
+        if(!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            $errors[] = "That's not a valid email address.";
+        }
+        
+        if($password != $confirmPassword) { 
+            $errors[] = "Your passwords did not match.";
+        }
+        
+        //display errors
+        
+        if (empty($errors)) {
+            require "connections/sql.php";
+            require "db/master-list.php";
+            db_createNewUser(array(
+                "name" => $name,
+                "password" => $password,
+                "email" => $email,
+                "company_name" => $companyName,
+                "phone_1" => $phone1,
+                "phone_2" => $phone2,
+                "address_1" => $address1,
+                "address_2" => $address2,
+                "address_3" => $address3,
+                "city" => $city,
+                "postcode" => $postcode,
+                "country" => $country,
+                "bio" => $description,
+                "user_type" => "donor"
+            ));
+            header("Location: home.php");
+        } 
+        
+    }
+?>
 <!DOCTYPE html>
 <html>
     <head>
@@ -62,63 +117,75 @@
     </div>
         
     <div class="container body-content">               
-        <div class="col-sm-6 col-sm-offset-3 well">        
-            <form class="form-horizontal">
+        <div class="col-sm-6 col-sm-offset-3 well">
+            <?php 
+                if(!empty($errors)) {
+                    echo('<p> The following error(s) occurred: </p>');
+                    echo('<ul>');
+                    foreach($errors as $e) {
+                        echo('<li>' . $e . '</li>');
+                    }
+                    echo('</ul>');                    
+                    
+                }
+            ?>
+            <form class="form-horizontal" action="register-donor.php" method="post">
+                <input type="hidden" name="sent" value="1" />
               <fieldset>   
               <legend class="text-left">Register as a donor</legend>
                 <div class="form-group">
                   <label for="name" class="col-lg-4 control-label">Full Name</label>
                   <div class="col-lg-6">
-                    <input class="form-control" id="name" placeholder="Name" type="text">
+                    <input class="form-control" id="name" placeholder="Name" type="text" name="full-name" value="<?php if (isset($_POST) && isset($_POST['full_name'])) echo($_POST['full_name']); ?>">
                   </div>
                 </div>  
 
                 <div class="form-group">
                   <label for="email" class="col-lg-4 control-label">Email</label>
                   <div class="col-lg-6">
-                    <input class="form-control" id="email" placeholder="Email" type="text">
+                    <input class="form-control" id="email" placeholder="Email" type="text" name="email" value="<?php if (isset($_POST) && isset($_POST['email'])) echo($_POST['email']); ?>">
                   </div>
                 </div>                   
               
               <div class="form-group">
                   <label for="password" class="col-lg-4 control-label">Password</label>
                   <div class="col-lg-6">
-                    <input class="form-control" id="password" placeholder="Password" type="password">
+                    <input class="form-control" id="password" placeholder="Password" type="password" name="password">
                   </div>
               </div>
                   
               <div class="form-group">
                   <label for="confirm-password" class="col-lg-4 control-label">Confirm Password</label>
                   <div class="col-lg-6">
-                    <input class="form-control" id="confirm-password" placeholder="Confirm Password" type="password">
+                    <input class="form-control" id="confirm-password" placeholder="Confirm Password" type="password" name="confirm-password">
                   </div>
               </div>
                   
                 <div class="form-group">
                   <label for="company-name" class="col-lg-4 control-label">Company Name</label>
                   <div class="col-lg-6">
-                    <input class="form-control" id="company-name" placeholder="Company Name" type="text">
+                    <input class="form-control" id="company-name" placeholder="Company Name" type="text" name="company-name">
                   </div>
                 </div> 
                   
                 <div class="form-group">
                   <label for="phone1" class="col-lg-4 control-label">Phone Number 1</label>
                   <div class="col-lg-6">
-                    <input class="form-control" id="phone1" placeholder="Phone Number" type="text">
+                    <input class="form-control" id="phone1" placeholder="Phone Number" type="text" name="phone1">
                   </div>
                 </div>
                   
                 <div class="form-group">
                   <label for="phone2" class="col-lg-4 control-label">Phone Number 2</label>
                   <div class="col-lg-6">
-                    <input class="form-control" id="phone2" placeholder="Phone Number" type="text">
+                    <input class="form-control" id="phone2" placeholder="Phone Number" type="text" name="phone2">
                   </div>
                 </div>
                   
                 <div class="form-group">
                   <label for="address1" class="col-lg-4 control-label">Address 1</label>
                   <div class="col-lg-6">
-                    <input class="form-control" id="address1" placeholder="Address" type="text">   
+                    <input class="form-control" id="address1" placeholder="Address" type="text" name="address1">   
                       <span id="address1-add" class="help-block text-right">Add another line of address</span>
                   </div>
                 </div>  
@@ -126,7 +193,7 @@
                 <div id="address2-div" class="form-group collapse">
                   <label for="address2" class="col-lg-4 control-label">Address 2</label>
                   <div class="col-lg-6">
-                    <input class="form-control" id="address2" placeholder="Address" type="text">                                    
+                    <input class="form-control" id="address2" placeholder="Address" type="text" name="address2">                                    
                       <span id="address2-add" class="help-block text-right">Add another line of address</span>
                   </div>
                     <div class="col-sm-2">
@@ -137,7 +204,7 @@
                 <div id="address3-div" class="form-group collapse">
                   <label for="address3" class="col-lg-4 control-label">Address 3</label>
                   <div class="col-lg-6">
-                    <input class="form-control" id="address3" placeholder="Address" type="text">
+                    <input class="form-control" id="address3" placeholder="Address" type="text" name="address3">
                   </div>
                     <div class="col-sm-2">
                         <span id="address3-remove" class="fa fa-minus control-label"></span>
@@ -147,7 +214,7 @@
                  <div class="form-group">
                   <label for="city" class="col-lg-2 control-label">City</label>
                   <div class="col-lg-3">
-                    <input class="form-control" id="city" placeholder="City" type="text">                         
+                    <input class="form-control" id="city" placeholder="City" type="text" name="city">                         
                   </div>
                  <label for="postcode" class="col-lg-2 control-label">Postcode</label>
                  <div class="col-lg-3">
@@ -158,18 +225,18 @@
                 <div class="form-group">
                   <label for="country" class="col-lg-4 control-label">Country</label>
                   <div class="col-lg-6">
-                    <input class="form-control" id="country" placeholder="Country" type="text">                         
+                    <input class="form-control" id="country" placeholder="Country" type="text" name="country">                         
                   </div>
                 </div>  
                   
                   <div class="form-group">
                   <label for="description" class="col-lg-4 control-label">Description</label>
                   <div class="col-lg-6">
-                    <textarea class="form-control" rows="3" id="description" placeholder="Write a small description of your company business." style="resize:none;"></textarea>                   
+                    <textarea class="form-control" rows="3" id="description" name="description" placeholder="Write a small description of your company business." style="resize:none;"></textarea>                   
                   </div>
                 </div>
                   
-                  <button type="button" id="register-btn" class="btn btn-success pull-right">Register</button>
+                  <button id="register-btn" class="btn btn-success pull-right">Register</button>
               </fieldset>
             </form>
         </div>
