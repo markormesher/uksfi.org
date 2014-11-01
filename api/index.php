@@ -1,6 +1,7 @@
 <?php
 
 // get classes
+require_once 'InterestEndpoint.class.php';
 require_once 'InvalidEndpoint.class.php';
 require_once 'ListingEndpoint.class.php';
 require_once 'LoginEndpoint.class.php';
@@ -30,6 +31,10 @@ if (!in_array($version, $aliveVersions)) {
 
 // decide which endpoint to use
 switch ($endpoint) {
+
+	case 'interest':
+		$api = new InterestEndpoint($request);
+		break;
 
 	case 'login':
 		$api = new LoginEndpoint($request);
