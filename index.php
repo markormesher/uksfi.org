@@ -72,23 +72,23 @@
                     <p>Got spare food or drinks?</p>
                     <button type="button" id="give-register-btn" class="register-btn btn btn-primary">Register as a donor</button>
                     <div class="register-form collapse">
-                        <form class="form-horizontal">
+                        <form class="form-horizontal" action="register-donor.php" method="post">
                           <fieldset>   
                           <legend class="text-left">Enter your details below</legend>
                             <div class="form-group">
                               <label for="name-donor" class="col-lg-3 control-label">Full Name</label>
                               <div class="col-lg-6">
-                                <input class="form-control" id="name-donor" placeholder="Name" type="text">
+                                <input class="form-control" id="name-donor" placeholder="Name" type="text" name="full_name">
                               </div>
                             </div>  
                               
                             <div class="form-group">
                               <label for="email-donor" class="col-lg-3 control-label">Email</label>
                               <div class="col-lg-6">
-                                <input class="form-control" id="email-donor" placeholder="Email" type="text">
+                                <input class="form-control" id="email-donor" placeholder="Email" type="text" name="email">
                               </div>
                             </div>   
-                              <button type="button" id="register-finish-btn" class="btn btn-warning pull-right">Go</button>
+                            <button id="register-finish-btn" class="btn btn-warning pull-right">Go</button>
                           </fieldset>
                         </form> 
                     </div>
