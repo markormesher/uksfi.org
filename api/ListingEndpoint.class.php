@@ -12,12 +12,16 @@ class ListingEndpoint extends BaseAPI {
 		$method = parent::getMethod();
 		$args = parent::getArgs();
 		$qs = parent::getQueryString();
+		$file = parent::getFile();
 
 		if ($method == 'GET' && count($args) == 1) {
 			$this->getListing($args[0]);
 			return;
 		} elseif ($method == 'GET') {
 			$this->getListings($qs);
+			return;
+		} elseif ($method == 'POST') {
+			$this->createListing($file);
 			return;
 		}
 
@@ -51,6 +55,16 @@ class ListingEndpoint extends BaseAPI {
 		} else {
 			$data = array('Error' => 'An error occurred when querying the database');
 			parent::_sendResponse($data, 500);
+		}
+	}
+
+	function createListing($input) {
+		$listingId = db_createNewListing($input);
+		if ($listingId === false) {
+			parent::_sendResponse(array('Error' => 'An error occurred', 500));
+		} else {
+			$listing = db_getListing($listingId);
+			parent::_sendResponse($listing);
 		}
 	}
 }

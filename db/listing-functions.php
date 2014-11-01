@@ -37,3 +37,19 @@ function db_getListings($filters) {
 	}
 	return search('listings', $filter);
 }
+
+/**
+ * Create a new listing
+ */
+function db_createNewListing($input) {
+	$fields = array('donor_id', 'title', 'description', 'address_1', 'address_2', 'address_3', 'city', 'postcode', 'country', 'contains', 'can_deliver');
+	$dbInsert = array();
+	$dbInsert['posted_on'] = array('NOW()');
+	$dbInsert['expires_on'] = array('ADDDATE(NOW(), INTERVAL 7 DAY)');
+	foreach ($fields as $f) {
+		if (isset($input[$f])) {
+			$dbInsert[$f] = $input[$f];
+		}
+	}
+	return insert('listings', $dbInsert);
+}
