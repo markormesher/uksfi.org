@@ -65,6 +65,9 @@ class ListingEndpoint extends BaseAPI {
 		} else {
 			$listing = db_getListing($listingId);
 			parent::_sendResponse($listing);
+
+			// send alert
+			notifyListingPosted($listingId);
 		}
 	}
 }
