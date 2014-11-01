@@ -72,3 +72,23 @@ function db_getMultiUserPref($userId, $prefNames) {
 	}
 	return $output;
 }
+
+/**
+ * Creates a new user account
+ */
+function db_createNewUser($input) {
+	$fields = array('email', 'password', 'name', 'company_name', 'phone_1', 'phone_2', 'address_1', 'address_2', 'address_3', 'city', 'postcode', 'country', 'user_type', 'bio');
+	$dbInsert = array();
+	$dbInsert['joined'] = array('NOW()');
+	$dbInsert['active'] = array('NOW()');
+	foreach ($fields as $f) {
+		if (isset($input[$f])) {
+			if ($f == 'password') {
+				$dbInsert[$f] = array('SHA1(\'' . $input[$f] . '\')');
+			} else {
+				$dbInsert[$f] = $input[$f];
+			}
+		}
+	}
+	return insert('users', $dbInsert);
+}
