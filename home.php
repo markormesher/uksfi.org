@@ -1,3 +1,7 @@
+<?php 
+    define('SECURE', true);
+    require 'secure.php';
+?>
 <!DOCTYPE html>
 <html>
     <head>
@@ -14,7 +18,6 @@
     <body>
        <div class="navbar navbar-inverse navbar-fixed-top">
           <div class="container">
-
               <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-inverse-collapse">
                   <span class="icon-bar"></span>
@@ -28,7 +31,7 @@
                   <li class="active"><a href="#">Active</a></li>
                   <li><a href="#">Link</a></li>
                   <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Hello, <?php echo($USER['name']); ?>! <b class="caret"></b></a>
                     <ul class="dropdown-menu">
                       <li><a href="#">Action</a></li>
                       <li><a href="#">Another action</a></li>
@@ -46,7 +49,7 @@
                 <ul class="nav navbar-nav navbar-right">
                   <li><a href="#">Link</a></li>
                   <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Hello, <?php echo($USER['name']); ?>! <b class="caret"></b></a>
                     <ul class="dropdown-menu">
                       <li><a href="#">Action</a></li>
                       <li><a href="#">Another action</a></li>
@@ -60,7 +63,8 @@
        </div>
     </div>
         
-    <div class="container body-content">    
+    <div class="container body-content">   
+        <p></p>
         <div class="row">
         <div id="filters" class="col-sm-3">                               
                 <h3>Food type</h4>
@@ -112,21 +116,24 @@
                  <ul class="list-group">
                     <li class="list-group-item checkbox-label">
                     <input class="checkbox-main" type="checkbox" />
-                        <label>Delivery</label>
+                        <label>Can be delivered</label>
                     </li>
                     
                     <li class="list-group-item checkbox-label">
                     <input class="checkbox-main" type="checkbox" />
                         <label>Collection in person</label>
                     </li>
-            </ul>
-                
+                </ul>                
         </div>
         
         <div id="listings-section" class="col-sm-9">
             <div class="row">
                 <h3 class="text-center">Active listings</h3>
             </div>
+            
+            <?php
+                $listings = db_getListings(array());
+            ?>
             
             <div class="row">
                 <div class="panel panel-default">

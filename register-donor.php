@@ -1,4 +1,7 @@
-<?php
+<?php 
+    define('SECURE', false);
+    require 'secure.php';
+
     if (isset($_POST) && isset($_POST['sent'])) {
         // collect variables
         $name = $_POST['full-name'];
@@ -18,21 +21,24 @@
         
         // check for errors
         $errors = array();
+        $errorCodes = array();
         
         if(!filter_var($email, FILTER_VALIDATE_EMAIL)) {
             $errors[] = "That's not a valid email address.";
+            $errorCodes[] = 'email';
         }
         
         if($password != $confirmPassword) { 
             $errors[] = "Your passwords did not match.";
+            $errorCodes[] = 'password-mismatch';
         }
         
         //display errors
         
         if (empty($errors)) {
-            require "connections/sql.php";
-            require "db/master-list.php";
-            db_createNewUser(array(
+            require_once "connections/sql.php";
+            require_once "db/master-list.php";
+            $userID = db_createNewUser(array(
                 "name" => $name,
                 "password" => $password,
                 "email" => $email,
@@ -48,6 +54,7 @@
                 "bio" => $description,
                 "user_type" => "donor"
             ));
+            $_SESSION['userID'] = $userID;
             header("Location: home.php");
         } 
         
@@ -118,17 +125,6 @@
         
     <div class="container body-content">               
         <div class="col-sm-6 col-sm-offset-3 well">
-            <?php 
-                if(!empty($errors)) {
-                    echo('<p> The following error(s) occurred: </p>');
-                    echo('<ul>');
-                    foreach($errors as $e) {
-                        echo('<li>' . $e . '</li>');
-                    }
-                    echo('</ul>');                    
-                    
-                }
-            ?>
             <form class="form-horizontal" action="register-donor.php" method="post">
                 <input type="hidden" name="sent" value="1" />
               <fieldset>   
@@ -140,24 +136,26 @@
                   </div>
                 </div>  
 
-                <div class="form-group">
-                  <label for="email" class="col-lg-4 control-label">Email</label>
+                <div class="form-group <?=(isset($errorCodes) && in_array('email', $errorCodes)) ? 'has-error' : ''; ?>">
+                  <label for="email" class="col-lg-4 control-label">Email</label>                    
                   <div class="col-lg-6">
                     <input class="form-control" id="email" placeholder="Email" type="text" name="email" value="<?php if (isset($_POST) && isset($_POST['email'])) echo($_POST['email']); ?>">
+                       <span style="margin-bottom:0px;" class="help-block <?=(isset($errorCodes) && in_array('email', $errorCodes)) ? '' : 'collapse'; ?>">Please enter a valid email address.</span>
                   </div>
                 </div>                   
               
-              <div class="form-group">
+              <div class="form-group <?=(isset($errorCodes) && in_array('password-mismatch', $errorCodes)) ? 'has-error' : ''; ?>">
                   <label for="password" class="col-lg-4 control-label">Password</label>
                   <div class="col-lg-6">
-                    <input class="form-control" id="password" placeholder="Password" type="password" name="password">
+                    <input class="form-control" id="password" placeholder="Password" type="password" name="password">                    
                   </div>
               </div>
                   
-              <div class="form-group">
+              <div class="form-group <?=(isset($errorCodes) && in_array('password-mismatch', $errorCodes)) ? 'has-error' : ''; ?>">
                   <label for="confirm-password" class="col-lg-4 control-label">Confirm Password</label>
                   <div class="col-lg-6">
                     <input class="form-control" id="confirm-password" placeholder="Confirm Password" type="password" name="confirm-password">
+                      <span style="margin-bottom:0px;" class="help-block <?=(isset($errorCodes) && in_array('password-mismatch', $errorCodes)) ? '' : 'collapse'; ?>">Your passwords must match.</span>
                   </div>
               </div>
                   
