@@ -1,0 +1,6 @@
+Options +FollowSymLinks
+
+RewriteEngine On
+
+RewriteRule ^.*\.php$ - [L]
+RewriteRule ^(.*)$ index.php?request=$1 [QSA]
