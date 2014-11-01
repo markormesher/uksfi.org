@@ -8,13 +8,18 @@ require_once 'sql-connect.php';
 
 function search($table, $filter, $limit = 0) {
 	$filterString = buildFilterString($filter);
-	$query = @mysql_query('SELECT * FROM `' . $table . '` WHERE ' . $filterString . ($limit > 0 ? ' LIMIT ' . $limit : ''));
+	$queryString = 'SELECT * FROM `' . $table . '` WHERE ' . $filterString . ($limit > 0 ? ' LIMIT ' . $limit : '');
+	$query = @mysql_query($queryString);
 	if ($query) {
 		$output = array();
 		while ($r = mysql_fetch_array($query, MYSQL_ASSOC)) $output[] = $r;
-		return $output;
+		if (empty($output)) {
+			return false;
+		} else {
+			return $output;
+		}
 	} else {
-		return null;
+		return false;
 	}
 }
 
