@@ -2,7 +2,9 @@
 
 // get classes
 require_once 'InvalidEndpoint.class.php';
+require_once 'ListingEndpoint.class.php';
 require_once 'LoginEndpoint.class.php';
+require_once 'PreferenceEndpoint.class.php';
 
 // get database
 require_once '../connections/sql.php';
@@ -28,6 +30,15 @@ switch ($endpoint) {
 
 	case 'login':
 		$api = new LoginEndpoint($request);
+		break;
+
+	case 'listing':
+		$api = new ListingEndpoint($request);
+		break;
+
+	case 'prefs':
+	case 'preferences':
+		$api = new PreferenceEndpoint($request);
 		break;
 
 	default:
