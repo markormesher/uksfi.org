@@ -34,9 +34,9 @@ function insert($table, $input) {
 	}
 
 	$queryString = 'INSERT INTO `' . $table . '` (' . implode(',', $fields) . ') VALUES (' . implode(',', $values) . ')';
-	$query = mysql_query($queryString);
+	$query = @mysql_query($queryString);
 	if ($query) {
-		return mysql_insert_id();
+		return @mysql_insert_id();
 	} else {
 		return false;
 	}
@@ -62,6 +62,11 @@ function update($table, $input, $id) {
 	} else {
 		return false;
 	}
+}
+
+function delete($table, $id) {
+	$queryString = 'DELETE FROM `' . $table . '` WHERE `id` = ' . $id . ' LIMIT 1';
+	@mysql_query($queryString);
 }
 
 function buildFilterString($filter) {
