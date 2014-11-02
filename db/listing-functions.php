@@ -65,7 +65,7 @@ function db_getListings($filters, $userId = 0) {
 				break;
 		}
 	}
-	$listings = search('listings', $filter);
+	$listings = search('listings', $filter, 0, 'ORDER BY `posted_on` DESC');
 	$output = array();
 	foreach ($listings as $l) {
 		$l = array_merge($l, array(

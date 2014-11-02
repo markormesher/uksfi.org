@@ -2,9 +2,9 @@
 
 require_once 'sql-connect.php';
 
-function search($table, $filter, $limit = 0) {
+function search($table, $filter, $limit = 0, $extra = '') {
 	$filterString = buildFilterString($filter);
-	$queryString = 'SELECT * FROM `' . $table . '` WHERE ' . $filterString . ($limit > 0 ? ' LIMIT ' . $limit : '');
+	$queryString = 'SELECT * FROM `' . $table . '` WHERE ' . $filterString . ($limit > 0 ? ' LIMIT ' . $limit : '') . ' ' . $extra;
 	$query = @mysql_query($queryString);
 	if ($query) {
 		$output = array();
