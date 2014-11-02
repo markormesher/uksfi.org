@@ -17,8 +17,8 @@ function db_registerInterest($listingId, $userId) {
  */
 function db_checkInterest($listingId, $userId) {
 	$result = search('listings', array(1,
-		'listing_id' => $listingId,
-		'user_id' => $userId
+		'`listing_id` = ' . $listingId,
+		'`user_id` = ' . $userId
 	));
 	return is_array($result) && count($result);
 }
