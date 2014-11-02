@@ -1,6 +1,6 @@
 <?php 
     define('SECURE', false);
-    require 'secure.php';
+    require_once 'secure.php';
 
     $failedLogin = false;
     if (isset($_POST) && isset($_POST['sent'])) {

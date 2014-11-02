@@ -1,6 +1,6 @@
 <?php 
     define('SECURE', true);
-    require 'secure.php';
+    require_once 'secure.php';
 ?>
 <!DOCTYPE html>
 <html>
@@ -70,45 +70,19 @@
                 <h3>Food type</h4>
             
                 <ul class="list-group">
-                    <li class="list-group-item checkbox-label">
-                    <input class="checkbox-main" type="checkbox" />
-                        <label>Canned food</label>
-                    </li>
-                    
-                    <li class="list-group-item checkbox-label">
-                    <input class="checkbox-main" type="checkbox" />
-                        <label>Packaged food</label>
-                    </li>
-                    
-                    <li class="list-group-item checkbox-label">
-                    <input class="checkbox-main" type="checkbox" />
-                        <label>Canned food</label>
-                    </li>
-                    
-                    <li class="list-group-item checkbox-label">
-                    <input class="checkbox-main" type="checkbox" />
-                        <label>Confectionery</label>
-                    </li>
-                    
-                    <li class="list-group-item checkbox-label">
-                    <input class="checkbox-main" type="checkbox" />
-                        <label>Soft drinks</label>
-                    </li>
-                    
-                    <li class="list-group-item checkbox-label">
-                    <input class="checkbox-main" type="checkbox" />
-                        <label>Fresh food</label>
-                    </li>
-                    
-                    <li class="list-group-item checkbox-label">
-                    <input class="checkbox-main" type="checkbox" />
-                        <label>Frozen food</label>
-                    </li>
-                    
-                    <li class="list-group-item checkbox-label">
-                    <input class="checkbox-main" type="checkbox" />
-                        <label>Basic ingredients</label>
-                    </li>
+                    <?php
+                    $types = array();
+                    $types['canfood'] = 'Canned Food';
+                    $types['packfood'] = 'Packaged Food (Unopened)';
+                    $types['confec'] = 'Confectionery';
+                    $types['drinks'] = 'Bottled Soft Drinks';
+                    $types['fresh'] = 'Fresh Food';
+                    $types['frozen'] = 'Frozen Food';
+                    $types['ingred'] = 'Basic Ingredients';
+                    foreach ($types as $k => $v) {
+                        echo('<li class="list-group-item checkbox-label"><input class="checkbox-main" type="checkbox" name="filter_food_type[]" value="'.$k.'" /> <label>'.$v.'</label></li>');
+                    }
+                    ?>
                 </ul>
             
                 <h3>Collection</h5>
@@ -130,23 +104,25 @@
             <div class="row">
                 <h3 class="text-center">Active listings</h3>
             </div>
-            
             <?php
-                $listings = db_getListings(array());
-            ?>
-            
-            <div class="row">
+                $listings = db_getListings(array(), $USER['id']);
+                foreach($listings as $l) {
+                ?> 
+                  <div class="row">
                 <div class="panel panel-default">
                   <div class="panel-heading">
-                      <h4>Leftover sandwiches from hackaton <span style="font-size:12px;" class="help-block listing-tags">Packaged food, Drinks</span></h4>
+                      <h4><?=$l['title'];?> <span style="font-size:12px;" class="help-block listing-tags"><?php
+                        $contents = explode(',', $l['contents']);
+                    foreach ($contents as $k => $c) $contents[$k] = $types[$c];
+                    echo(implode(', ', $contents));
+                          ?></span></h4>
                     </div>
                   <div class="panel-body">
                     <div class="col-sm-8 listing-info">
-                        <p class="listing-location"><span>London, WC1E 7HU</span></p>
-                        <p class="listing-company"><span>MLHacks</span></p>
-                        <p class="listing-descr"><span>We have some leftover sandwiches from our Student Hack event last weekend! Additionally, there's 20 packs of Red Bull that Mark wasn't able to finish due to passing out after his 46th drink.</span></p>
-                        <p class="listing-posted collapse"><span>Date posted: 2nd November 2014</span></p>                        
-                        <p class="listing-expiry"><span>Expires: 5th November 2014</span></p>  
+                        <p class="listing-location"><span><?=$l['address_1'];?>, <?=$l['postcode'];?></span></p>
+                        <p class="listing-descr"><span><?=$l['description'];?></span></p>
+                        <p class="listing-posted collapse">Posted: <span><?=date('j\<\s\u\p\>S\<\/\s\u\p\> M Y', strtotime($l['posted_on']));?></span></p>                        
+                        <p class="listing-expiry">Expires: <span><?=date('j\<\s\u\p\>S\<\/\s\u\p\> M Y', strtotime($l['expires_on']));?></span></p>  
                         <p class="text-danger listing-expand pointer-cursor"><span class="fa fa-angle-double-down"></span> More information</p>
                     </div>
                       
@@ -158,7 +134,9 @@
                       <p class="listing-user-status text-info"><span>You've expressed your interest.</span></p>
                   </div>                
             </div>
-        </div>                
+        </div> <?php
+                }
+            ?>               
     </div>
         </div>
     </div>

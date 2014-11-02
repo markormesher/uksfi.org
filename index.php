@@ -1,6 +1,6 @@
 <?php 
     define('SECURE', false);
-    require 'secure.php';
+    require_once 'secure.php';
 ?>
 <!DOCTYPE html>
 <html>

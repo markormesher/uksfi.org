@@ -1,6 +1,6 @@
 <?php 
     define('SECURE', false);
-    require 'secure.php';
+    require_once 'secure.php';
 
     if (isset($_POST) && isset($_POST['sent'])) {
         // collect variables
@@ -20,22 +20,19 @@
         $description = $_POST['description'];
         
         // check for errors
-        $errors = array();
         $errorCodes = array();
         
         if(!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            $errors[] = "That's not a valid email address.";
             $errorCodes[] = 'email';
         }
         
         if($password != $confirmPassword) { 
-            $errors[] = "Your passwords did not match.";
             $errorCodes[] = 'password-mismatch';
         }
         
         //display errors
         
-        if (empty($errors)) {
+        if (empty($errorCodes)) {
             require_once "connections/sql.php";
             require_once "db/master-list.php";
             $userID = db_createNewUser(array(
