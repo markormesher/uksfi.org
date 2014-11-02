@@ -26,7 +26,6 @@ function notifyUserForListing($listingId, $userId) {
 	$notifyVia = db_getUserPref($userId, 'r_notify_via');
 	$notifications = explode(',', $notifyVia['pref_value']);
 	foreach ($notifications as $n) {
-		echo($n . '-');
 		switch ($n) {
 			case 'yo':
 				$yoUsername = $profile['yo_username'];
