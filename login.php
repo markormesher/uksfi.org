@@ -34,7 +34,8 @@
     </head>
     <body>
         
-    <div class="container body-content">    
+    <div class="container body-content"> 
+        <div class="row text-center"><img src ="img/logo.png" /></div>
         <div class="col-sm-6 col-sm-offset-3">
             <?php if($failedLogin) { ?>
                 <p>Login failed, sorry bro.</p>

@@ -61,7 +61,8 @@ if (isset($_POST) && isset($_POST['sent'])) {
     </head>
     <body>
         
-    <div class="container body-content">               
+    <div class="container body-content">   
+        <div class="row text-center"><img src ="img/logo.png" /></div>
         <div class="row">            
             <div id="create-listing" class="col-sm-6 col-sm-offset-3">
                 <h2 class="text-center" style="margin-bottom:20px;">Create your listing</h2>

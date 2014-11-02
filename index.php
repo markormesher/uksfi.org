@@ -14,66 +14,21 @@
         <link rel="stylesheet" href="css/cerulean-bootstrap.min.css"/>
         <link rel="stylesheet" href="css/site.css"/>
     </head>
-    <body>
-       <div class="navbar navbar-inverse navbar-fixed-top">
-          <div class="container">
-
-              <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-inverse-collapse">
-                  <span class="icon-bar"></span>
-                  <span class="icon-bar"></span>
-                  <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="#">Brand</a>
-              </div>
-              <div class="navbar-collapse collapse navbar-inverse-collapse">
-                <ul class="nav navbar-nav">
-                  <li class="active"><a href="#">Active</a></li>
-                  <li><a href="#">Link</a></li>
-                  <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
-                    <ul class="dropdown-menu">
-                      <li><a href="#">Action</a></li>
-                      <li><a href="#">Another action</a></li>
-                      <li><a href="#">Something else here</a></li>
-                      <li class="divider"></li>
-                      <li class="dropdown-header">Dropdown header</li>
-                      <li><a href="#">Separated link</a></li>
-                      <li><a href="#">One more separated link</a></li>
-                    </ul>
-                  </li>
-                </ul>
-                <form class="navbar-form navbar-left">
-                  <input class="form-control col-lg-8" placeholder="Search" type="text">
-                </form>
-                <ul class="nav navbar-nav navbar-right">
-                  <li><a href="#">Link</a></li>
-                  <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
-                    <ul class="dropdown-menu">
-                      <li><a href="#">Action</a></li>
-                      <li><a href="#">Another action</a></li>
-                      <li><a href="#">Something else here</a></li>
-                      <li class="divider"></li>
-                      <li><a href="#">Separated link</a></li>
-                    </ul>
-                  </li>
-                </ul>
-              </div>
-       </div>
-    </div>
-        
+    <body>        
     <div class="container body-content">               
-        <div class="row">            
+        <div class="row">  
+            <div class="row text-center"><img src ="img/logo.png" /></div>
             <h3 class="text-center">What would you like to do?</h3>
             <br>
-            <div class="col-sm-6">
+            <div  id="donate-div"  class="col-sm-6">
                 <div class="well text-center">
-                    <h3>Give</h3>
+                    <h3>Donate</h3>
                     <hr />
-                    <p>Got spare food or drinks?</p>
-                    <p>Got spare food or drinks?</p>
-                    <p>Got spare food or drinks?</p>
+                    <p><i>Got any spare food that you are about to throw away?</i></p>
+                    <br />                    
+                    <p>Many social events that provide food end up with a surplus of fresh meals and drinks. But why throw them away when you could give them to people who can't afford to eat?</p>
+                    <p>The purpose of the <strong class="text-info">UK Spare Food Initiative</strong> is to prevent spare edible food going to waste. If you or your organisation would like to donate food to those in need then get started by clicking the register button before!</p>
+                    <br />
                     <button type="button" id="give-register-btn" class="register-btn btn btn-primary">Register as a donor</button>
                     <div class="register-form collapse">
                         <form class="form-horizontal" action="register-donor.php" method="post">
@@ -99,13 +54,15 @@
                 </div>
             </div>
         
-            <div class="col-sm-6">
+            <div id="receive-div" class="col-sm-6">
                 <div class="well text-center">
                     <h3>Receive</h3>
                     <hr />
-                    <p>Got spare food or drinks?</p>
-                    <p>Got spare food or drinks?</p>
-                    <p>Got spare food or drinks?</p>
+                    <p><i>Looking to supply food to those in need?</i></p>
+                    <br />
+                    <p>If you are an individual or organisation that helps to provide food for people and charities who cannot provide it for themselves, then you have come to the right place.</p>
+                    <p>We'll help connect you to a wide range of sources of surplus food, notifying you when food becomes available that matches your preferences and capabilities. Start by clicking the register button below!</p>
+                    <br />
                     <button type="button" id="receive-register-btn" class="register-btn btn btn-primary">Register as a receiver</button>             
                     <div class="register-form collapse" >
                         <form class="form-horizontal" action="register-receiver.php" method="post">
@@ -132,7 +89,7 @@
             </div>                    
         </div>
                 
-        <div class="row ">
+        <div class="row">
             <form class="form-horizontal" action="login.php">
                 <fieldset> 
                     <button type="submit" id="login-btn" class="btn btn-success btn-lg pull-right">Log in</button>
@@ -154,6 +111,13 @@
                 $(this).siblings('.register-form').slideDown('slow',function() {
                   $(this).toggleClass('collapse');
                 });
+            });
+            
+            console.log($('#receive-div'));
+            console.log($('#donate-div'));
+            $('#receive-div').height($('#donate-div').height());
+            $(window).resize(function () {
+               $('#receive-div').height($('#donate-div').height());
             });
 		</script>
     </body>

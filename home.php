@@ -16,55 +16,8 @@
         <link rel="stylesheet" href="css/site.css"/>
     </head>
     <body>
-       <div class="navbar navbar-inverse navbar-fixed-top">
-          <div class="container">
-              <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-inverse-collapse">
-                  <span class="icon-bar"></span>
-                  <span class="icon-bar"></span>
-                  <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="#">Brand</a>
-              </div>
-              <div class="navbar-collapse collapse navbar-inverse-collapse">
-                <ul class="nav navbar-nav">
-                  <li class="active"><a href="#">Active</a></li>
-                  <li><a href="#">Link</a></li>
-                  <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Hello, <?php echo($USER['name']); ?>! <b class="caret"></b></a>
-                    <ul class="dropdown-menu">
-                      <li><a href="#">Action</a></li>
-                      <li><a href="#">Another action</a></li>
-                      <li><a href="#">Something else here</a></li>
-                      <li class="divider"></li>
-                      <li class="dropdown-header">Dropdown header</li>
-                      <li><a href="#">Separated link</a></li>
-                      <li><a href="#">One more separated link</a></li>
-                    </ul>
-                  </li>
-                </ul>
-                <form class="navbar-form navbar-left">
-                  <input class="form-control col-lg-8" placeholder="Search" type="text">
-                </form>
-                <ul class="nav navbar-nav navbar-right">
-                  <li><a href="#">Link</a></li>
-                  <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Hello, <?php echo($USER['name']); ?>! <b class="caret"></b></a>
-                    <ul class="dropdown-menu">
-                      <li><a href="#">Action</a></li>
-                      <li><a href="#">Another action</a></li>
-                      <li><a href="#">Something else here</a></li>
-                      <li class="divider"></li>
-                      <li><a href="#">Separated link</a></li>
-                    </ul>
-                  </li>
-                </ul>
-              </div>
-       </div>
-    </div>
-        
     <div class="container body-content">   
-        <p></p>
+        <div class="row text-center"><img src ="img/logo.png" /></div>
         <div class="row">
         <div id="filters" class="col-sm-3">                               
                 <h3>Food type</h4>
@@ -80,7 +33,7 @@
                     $types['frozen'] = 'Frozen Food';
                     $types['ingred'] = 'Basic Ingredients';
                     foreach ($types as $k => $v) {
-                        echo('<li class="list-group-item checkbox-label"><input class="checkbox-main" type="checkbox" name="filter_food_type[]" value="'.$k.'" /> <label>'.$v.'</label></li>');
+                        echo('<li class="list-group-item checkbox-label"><input class="checkbox-main" type="checkbox" name="filter_food_type[]" value="'.$k.'" checked="checked" /> <label>'.$v.'</label></li>');
                     }
                     ?>
                 </ul>
@@ -146,7 +99,7 @@
 		<script type="text/javascript">            
                         
             $('.listing-thumbnail img').height($('.thumbnail').siblings('.col-sm-8').height()*0.9);
-            $('.listing-thumbnail').width($('img').width());
+            $('.listing-thumbnail').width($('.listing-thumbnail img').width());
             
             $('.listing-expand').click(function(e) {
                 var datePosted = $(this).siblings('.listing-posted');
