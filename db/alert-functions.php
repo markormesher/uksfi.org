@@ -59,7 +59,8 @@ function notifyInterestExpressed($donorId, $receiverId, $listingId) {
 	$donorProfile = db_getUserProfile($donorId);
 	$receiverProfile = db_getUserProfile($receiverId);
 	$listing = db_getListing($listingId);
-	$notifications = db_getUserPref($donorId, 'r_notify_via');
+	$notifyVia = db_getUserPref($donorId, 'r_notify_via');
+	$notifications = explode(',', $notifyVia['pref_value']);
 	foreach ($notifications as $n) {
 		switch ($n) {
 			case 'yo':
